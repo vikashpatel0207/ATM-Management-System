@@ -1,36 +1,27 @@
 # ATM Management System (C++)
 
-A simple console-based ATM simulation program written in C++.
+This is a simple ATM program made in C++.
 
-This project demonstrates:
-- File handling
-- Structures
-- Functions
-- Basic authentication
-- Data persistence using text files
+## What this program can do
+- Login using account number & PIN
+- Withdraw money
+- Change PIN
+- Check balance
+- Save data in file
 
----
+## How to run
+1. Compile
+g++ main.cpp -o atm
 
-## Features
+2. Run
+./atm
 
-✔ Login using account number & PIN  
-✔ Masked PIN input (****)  
-✔ Withdraw money  
-✔ Change PIN  
-✔ Check account balance  
-✔ Data stored in file (accounts.txt)  
-✔ Menu-driven interface  
+## accounts.txt format
 
----
+AccountNumber PIN Name Balance
 
-## Technologies Used
+Example:
+123456789 1234 Vikash 5000
 
-- C++
-- File Handling (ifstream, ofstream)
-- Standard Template Library (vector)
-- conio.h (for hidden PIN input)
-
----
-
-## Project Structure
-
+## Author
+Vikash Patel

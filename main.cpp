@@ -1,4 +1,3 @@
-// upto 17 jan 2026
 #include <bits/stdc++.h>
 #include <conio.h>
 using namespace std;
@@ -14,8 +13,8 @@ struct transaction
 {
     long long int accountnum;
     string action;
-    int amount;
-    int amountleft;
+    long long int amount;
+    long long int amountleft;
     string date;
     string time;
 };
@@ -55,6 +54,7 @@ int takepin()
         ch = getch();
         if (ch == 13)
             break;
+        if(pin>999) break;    
         if (ch >= '0' && ch <= '9')
         {
             cout << "*";
@@ -136,7 +136,7 @@ int verifyuser(vector<account> &users, long long int acc, int pin)
     return index;
 }
 
-void savetransaction(account user, string type, int amount)
+void savetransaction(account user, string type, long long int amount)
 {
 
     ofstream fout("transactiondetails.txt", ios::app);
@@ -152,7 +152,7 @@ void savetransaction(account user, string type, int amount)
 
 void withdrawmoney(account &user)
 {
-    int amt;
+    long long int amt;
     cout << "Enter Amount You want to Withdraw" << endl;
     cin >> amt;
     if (amt <= 0)
@@ -171,6 +171,10 @@ void withdrawmoney(account &user)
         string ch = "DEBIT";
         savetransaction(user, ch, amt);
     }
+    string temp;
+    cout<<"press any key to continue"<<endl;
+    cin>>temp;
+    system("cls");
 }
 
 void showtransactionhistory(long long int accountnum)
@@ -180,7 +184,7 @@ void showtransactionhistory(long long int accountnum)
     cin >> num;
     vector<transaction> transactions = loadtransaction();
     bool transactionfound = false;
-    for (int i = transactions.size() - 1; i >= 0; i--)
+    for (int i = transactions.size(); i >= 0; i--)
     {
         if (accountnum == transactions[i].accountnum)
         {
@@ -224,6 +228,10 @@ void showtransactionhistory(long long int accountnum)
             }
         }
     }
+    string temp;
+    cout<<"press any key to continue"<<endl;
+    cin>>temp;
+    system("cls");
 }
 
 void saveusers(vector<account> &users)
@@ -276,16 +284,24 @@ void changepin(account &user)
             }
         }
     }
+    string temp;
+    cout<<"press any key to continue"<<endl;
+    cin>>temp;
+    system("cls");
 }
 
 void checkbalance(account &user)
 {
     cout << "Your available balace is: " << user.balance << endl;
+    string temp;
+    cout<<"press any key to continue"<<endl;
+    cin>>temp;
+    system("cls");
 }
 
 void depositemoney(account &user)
 {
-    int amt;
+    long long int amt;
     cout << "Enter Amount You want to Deposite" << endl;
     cin >> amt;
     if (amt <= 0)
@@ -301,9 +317,13 @@ void depositemoney(account &user)
         string ch = "CREDIT";
         savetransaction(user, ch, amt);
     }
+    string temp;
+    cout<<"press any key to continue"<<endl;
+    cin>>temp;
+    system("cls");
 }
 
-void savenewaccount(int acc, int pin, string name)
+void savenewaccount(long long int acc, int pin, string name)
 {
     ofstream fout("accounts.txt", ios::app);
     fout << acc << " " << encrypt(pin) << " " << name << " " << 0 << endl;
@@ -314,7 +334,7 @@ void createnewaccount()
     string ch;
     int pin1, pin2;
     vector<account> users = loadusers();
-    int acc = users[users.size() - 1].accountnum + 1;
+    long long int acc = users[users.size() - 1].accountnum + 1;
     bool accfound = false;
     if (users.size() == 0)
     {
@@ -371,12 +391,15 @@ void changename(account &user)
     cin >> ch;
     user.name = ch;
     cout << "Your NAME changed successfully" << endl;
+    string temp;
+    cout<<"press any key to continue"<<endl;
+    cin>>temp;
+    system("cls");
 }
 int main()
 {
     int index = -1;
-    vector<account> users = loadusers();
-
+    vector<account> users1 = loadusers();
     bool first = false;
     while (true)
     {
@@ -385,19 +408,22 @@ int main()
         cout << "2. Create NEW Account" << endl;
         int c1;
         cin >> c1;
+        system("cls");
         if (c1 == 1)
         {
 
             
 
             while (true)
-            {
-
+            {   
+                
+                vector<account> users1 = loadusers();
                 bool login = true;
                 long long int enteredaccountnum;
                 int enteredpin;
                 cout << "Enter Your Account Number" << endl;
                 cin >> enteredaccountnum;
+                system("cls");
                 if (cin.fail())
                 {
                     cin.clear();
@@ -410,7 +436,8 @@ int main()
                 enteredpin = takepin();
                 int enteredencryptedpin = encrypt(enteredpin);
 
-                index = verifyuser(users, enteredaccountnum, enteredencryptedpin);
+                index = verifyuser(users1, enteredaccountnum, enteredencryptedpin);
+                system("cls");
 
                 if (index == -1)
                 {
@@ -430,11 +457,24 @@ int main()
 
         else if (c1 == 2)
         {
+           
             createnewaccount();
+            system("cls");
+        
+
         }
-        else
-            cout << "Enter Valid Choice" << endl;
+        else {
+           
+            cout << "Enter Valid Choice, Press any key for OK" << endl;
+            string abc;
+            cin>>abc;
+            system("cls");
+            
+          }
+        
     }
+    users1.clear();
+    vector<account> users = loadusers();
 
     cout << "Welcome! " << users[index].name << endl;
     while (true)
@@ -457,12 +497,14 @@ int main()
         {
             withdrawmoney(users[index]);
             change = true;
+           
         }
 
         else if (choice == 2)
         {
             depositemoney(users[index]);
             change = true;
+            
         }
 
         else if (choice == 3)
@@ -472,12 +514,14 @@ int main()
         }
 
         else if (choice == 4)
-        {
+        {   
+            
             checkbalance(users[index]);
         }
 
         else if (choice == 5)
-        {
+        {   
+            
             showtransactionhistory(users[index].accountnum);
         }
 
@@ -485,6 +529,7 @@ int main()
         {
             changename(users[index]);
             change = true;
+           
         }
 
         else if (choice == 7)
@@ -499,4 +544,3 @@ int main()
         }
     }
 }
-
